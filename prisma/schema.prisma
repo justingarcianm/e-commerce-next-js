@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  desc        String?   @db.Text
+  price       Decimal
+  discount    Int       @default(0)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  designer    Designer  @relation(fields: [designerId], references: [id])
+  category    Category  @relation(fields: [categoryId], references: [id])
+  designerId  Int
+  categoryId  Int
+  Media       Media[]
+  Size        Size[]
+  Color       Color[]
+}
+
+model Media {
+  id        Int     @id @default(autoincrement())
+  link      String  @unique
+  format    String
+  version   String
+  products  Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model Designer {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  Product Product[]
+}
+
+model Category {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  Product Product[]
+}
+
+model Size {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  products  Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model Color {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  products  Product @relation(fields: [productId], references: [id])
+  productId String
+}
