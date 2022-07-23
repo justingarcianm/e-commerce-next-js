@@ -13,10 +13,11 @@ datasource db {
 }
 
 model Product {
-  id          String    @id @default(uuid())
+  id          String    @default(uuid())
   name        String    @unique
+  slug        String    @unique
   desc        String?   @db.Text
-  price       Decimal
+  price       Float
   discount    Int       @default(0)
 
   createdAt   DateTime  @default(now())
@@ -29,21 +30,22 @@ model Product {
   Media       Media[]
   Size        Size[]
   Color       Color[]
+
+  @@index([id, slug])
 }
 
 model Media {
   id        Int     @id @default(autoincrement())
   link      String  @unique
-  format    String
-  version   String
-  products  Product @relation(fields: [productId], references: [id])
-  productId String
+  products  Product? @relation(fields: [productId], references: [id])
+  productId String?
 }
 
 model Designer {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
-  Product Product[]
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  featured  Boolean   @default(false)
+  Product   Product[]
 }
 
 model Category {
@@ -55,13 +57,14 @@ model Category {
 model Size {
   id        Int     @id @default(autoincrement())
   name      String  @unique
-  products  Product @relation(fields: [productId], references: [id])
-  productId String
+  products  Product? @relation(fields: [productId], references: [id])
+  productId String?
 }
 
 model Color {
   id        Int     @id @default(autoincrement())
   name      String  @unique
-  products  Product @relation(fields: [productId], references: [id])
-  productId String
+  code      String
+  products  Product? @relation(fields: [productId], references: [id])
+  productId String?
 }
