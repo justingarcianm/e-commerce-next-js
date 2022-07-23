@@ -36,7 +36,7 @@ async function readProduct(req, res) {
     } catch (err) {
         console.error(err)
         res.status(500).json({
-            error: "Error reading designers from DB",
+            error: "Error reading products from DB",
             success: false
         })
     }

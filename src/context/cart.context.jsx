@@ -26,7 +26,7 @@ const CartContext = ({ children }) => {
   };
 
   return (
-    <CartWrapper.Provider values={{ loading, addToCart, removeFromCart }}>
+    <CartWrapper.Provider value={{ loading, addToCart, removeFromCart }}>
       {children}
     </CartWrapper.Provider>
   );
