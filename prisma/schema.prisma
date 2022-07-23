@@ -13,39 +13,39 @@ datasource db {
 }
 
 model Product {
-  id          String    @default(uuid())
-  name        String    @unique
-  slug        String    @unique
-  desc        String?   @db.Text
-  price       Float
-  discount    Int       @default(0)
+  id       String  @unique @default(uuid())
+  name     String  @unique
+  slug     String?  @unique
+  desc     String? @db.Text
+  price    Float
+  discount Int     @default(0)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  designer    Designer  @relation(fields: [designerId], references: [id])
-  category    Category  @relation(fields: [categoryId], references: [id])
-  designerId  Int
-  categoryId  Int
-  Media       Media[]
-  Size        Size[]
-  Color       Color[]
+  designer   Designer @relation(fields: [designerId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+  designerId Int
+  categoryId Int
+  Media      Media[]
+  Size       Size[]
+  Color      Color[]
 
   @@index([id, slug])
 }
 
 model Media {
-  id        Int     @id @default(autoincrement())
-  link      String  @unique
+  id        Int      @id @default(autoincrement())
+  link      String   @unique
   products  Product? @relation(fields: [productId], references: [id])
   productId String?
 }
 
 model Designer {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
-  featured  Boolean   @default(false)
-  Product   Product[]
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  featured Boolean   @default(false)
+  Product  Product[]
 }
 
 model Category {
@@ -55,15 +55,15 @@ model Category {
 }
 
 model Size {
-  id        Int     @id @default(autoincrement())
-  name      String  @unique
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
   products  Product? @relation(fields: [productId], references: [id])
   productId String?
 }
 
 model Color {
-  id        Int     @id @default(autoincrement())
-  name      String  @unique
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
   code      String
   products  Product? @relation(fields: [productId], references: [id])
   productId String?
